@@ -5,8 +5,9 @@ import getConfig
 gConfig = {}
 gConfig = getConfig.get_config( config_file="config.ini" )
 
-class cnnModel( object ):
-    def __init__( self, dropout_rate ):
+class CnnModel( object ):
+    def __init__( self, learning_rate, dropout_rate ):
+        self.learning_rate = learning_rate
         self.dropout_rate = dropout_rate
 
     def create_model( self ):
@@ -26,5 +27,5 @@ class cnnModel( object ):
         model.add( tf.keras.layers.Flatten( name="flatten" ) )
         model.add( tf.keras.layers.Dropout( rate=self.dropout_rate, name="d3" ) )
         model.add( tf.keras.layers.Dense( 10, activation="softmax" ) )
-        model.compile( loss="categorical_crossentropy", optimizer=tf.keras.optimizer.Adm(), metrics=["accuracy"] )
+        model.compile( loss="categorical_crossentropy", optimizer=tf.keras.optimizer.Adm( self.learning_rate ), metrics=["accuracy"] )
         return model
